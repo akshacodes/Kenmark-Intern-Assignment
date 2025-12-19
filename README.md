@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Leave and Productivity Analyzer
 
-## Getting Started
+A full-stack Monthly Attendance and Productivity Analysis Dashboard built with Next.js 15, Prisma, and MongoDB. This application processes Excel attendance sheets to calculate employee productivity, track leaves against company policy, and visualize performance data.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Access the deployed application here:
+**[Insert Your Vercel/Netlify Link Here]**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This tool allows HR or management to upload raw daily attendance logs in Excel format. It automatically parses the data, applies specific business logic for working hours, and generates a comprehensive dashboard with productivity metrics and visual charts.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Key Features
 
-## Learn More
+- **Excel Upload Processing:** Supports bulk upload of employee attendance data (.xlsx format).
+- **Automated Business Logic:**
+  - Mon-Fri: 8.5 working hours expected.
+  - Saturday: 4.0 working hours expected (Half-day).
+  - Sunday: Off.
+- **Productivity Analysis:** Calculates productivity percentage based on the total expected hours for the specific month versus actual hours worked.
+- **Leave Tracking:** Tracks absences against a monthly limit of 2 leaves.
+- **Visual Analytics:** Bar charts and detailed daily breakdown tables.
+- **Export:** Download monthly reports as CSV.
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend:** Next.js 15 (App Router), Tailwind CSS, Recharts
+- **Backend:** Next.js API Routes
+- **Database:** MongoDB Atlas
+- **ORM:** Prisma 5 (Stable)
+- **File Processing:** XLSX (SheetJS)
+- **Deployment:** Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How to Test the Live Application
 
-## Deploy on Vercel
+1. **Download Sample Data:**
+   Download the `sample_attendance.xlsx` file provided in this repository to your computer.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Access the Dashboard:**
+   Click the Live Demo link above.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Upload Data:**
+   Click the "Upload Data" button on the dashboard and select the `sample_attendance.xlsx` file.
+
+4. **Verify Results:**
+   - Check the "Monthly Summary" table.
+   - Verify that Saturdays are counted as 4 hours.
+   - Verify that missing days are flagged in red under "Leaves".
+   - View the "Productivity Comparison" graph.
+
+5. **Download Report:**
+   Click the "Download Report" button to export the analysis as a CSV file.
+
+## Project Structure
+
+- `app/page.tsx`: Main Dashboard UI containing Charts, Tables, and Logic.
+- `app/api/upload`: API route for parsing Excel files and saving data to MongoDB.
+- `app/api/stats`: API route for calculating business logic (Productivity, Leaves, Expected Hours).
+- `prisma/schema.prisma`: MongoDB Database Schema.
+
+---
+
+**Developed for Kenmark ITan Solutions Technical Assignment.**
