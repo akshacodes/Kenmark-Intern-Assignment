@@ -40,6 +40,7 @@ function excelDateToJSDate(serial: number) {
 }
 
 export async function POST(req: NextRequest) {
+  console.log("DEBUG DATABASE_URL:", JSON.stringify(process.env.DATABASE_URL));
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
