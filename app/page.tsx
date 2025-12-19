@@ -6,19 +6,15 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 const formatTime = (val: string | number) => {
   if (!val || val === "-") return "-";
   
-  // If it is already a string like "10:00", return it
   if (typeof val === "string" && val.includes(":")) return val;
 
-  // If it is a number (or string number), convert it
   const num = parseFloat(String(val));
   if (isNaN(num)) return "-";
 
-  // Excel Time -> Hours & Minutes
   const totalHours = num * 24;
   const hours = Math.floor(totalHours);
   const minutes = Math.round((totalHours - hours) * 60);
 
-  // Format with leading zeros (e.g., 9:5 -> 09:05)
   const hStr = String(hours).padStart(2, "0");
   const mStr = String(minutes).padStart(2, "0");
   
@@ -29,6 +25,14 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState("");
   const [data, setData] = useState<{ summary: any[], daily: any[] }>({ summary: [], daily: [] });
+
+  // 1. HIDDEN SIGNATURE: Prints to Browser Console
+  useEffect(() => {
+    console.log(
+      "%c Built by Akshata More | Student ID: 70362200003 ",
+      "background: #4F46E5; color: white; padding: 4px; border-radius: 4px; font-weight: bold;"
+    );
+  }, []);
 
   const fetchStats = async () => {
     try {
@@ -57,20 +61,16 @@ export default function Home() {
     } catch (error) { setStatus("Network error."); }
   };
 
-  // New Feature: Download CSV
   const handleDownload = () => {
     if (data.summary.length === 0) return alert("No data to download.");
 
-    // Create CSV Header
     let csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "Employee Name,Expected Hours,Actual Hours,Leaves Taken,Productivity %\n";
 
-    // Add Rows
     data.summary.forEach(row => {
       csvContent += `${row.name},${row.totalExpectedHours},${row.totalActualHours},${row.leavesTaken},${row.productivityDisplay}\n`;
     });
 
-    // Trigger Download
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -81,12 +81,17 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8 font-sans">
+    // 
+    <div 
+      className="min-h-screen bg-gray-50 p-8 font-sans"
+      data-developer="[Your Name]"
+      data-student-id="[Your ID]"
+    >
       <div className="max-w-7xl mx-auto space-y-8">
         
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-extrabold text-gray-800">
-            Leave & Productivity Analyzer
+            Leave and Productivity Analyzer
           </h1>
           {data.summary.length > 0 && (
             <button 
@@ -107,7 +112,7 @@ export default function Home() {
           {status && <p className="mt-3 font-medium text-blue-600">{status}</p>}
         </div>
 
-        {/* SECTION 1: VISUALIZATION */}
+        {/* Visualization */}
         {data.summary.length > 0 && (
           <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
              <h2 className="text-xl font-bold text-gray-700 mb-6">Productivity Comparison</h2>
@@ -126,7 +131,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* SECTION 2: MONTHLY SUMMARY */}
+        {/* Monthly Summary */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
           <div className="p-5 bg-gray-100 border-b"><h2 className="text-lg font-bold text-gray-700">Monthly Summary</h2></div>
           <table className="w-full text-left">
@@ -157,7 +162,7 @@ export default function Home() {
           </table>
         </div>
 
-        {/* SECTION 3: DAILY ATTENDANCE BREAKDOWN */}
+        {/* Daily Breakdown */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
           <div className="p-5 bg-gray-100 border-b"><h2 className="text-lg font-bold text-gray-700">Daily Attendance Breakdown</h2></div>
           <div className="max-h-96 overflow-y-auto">
@@ -178,7 +183,6 @@ export default function Home() {
                     <td className="p-4 text-gray-500">{row.date}</td>
                     <td className="p-4 font-medium">{row.employee}</td>
                     
-                    {/* The fix is applied here using formatTime() */}
                     <td className="p-4">{formatTime(row.inTime)}</td>
                     <td className="p-4">{formatTime(row.outTime)}</td>
                     
